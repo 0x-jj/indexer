@@ -98,15 +98,30 @@ export const processOnChainData = async (data: OnChainData, backfill?: boolean) 
     es.fills.addEventsPartial(data.fillEventsPartial),
     es.fills.addEventsOnChain(data.fillEventsOnChain),
   ]);
-  await Promise.all([
-    es.cancels.addEvents(data.cancelEvents),
-    es.cancels.addEventsOnChain(data.cancelEventsOnChain),
-    es.bulkCancels.addEvents(data.bulkCancelEvents),
-    es.nonceCancels.addEvents(data.nonceCancelEvents),
+
+  let nonFills: any[] = [];
+
+  if (!backfill) {
+    // During a long term backfill, we don't need cancel events.
+    // We are assuming everything older than 6 months will have expired
+    // so doesn't need to be marked as cancelled
+    // When we get closer to the current block (i.e. within 6 months) we should remove this 
+
+    nonFills = nonFills.concat([
+      es.cancels.addEvents(data.cancelEvents),
+      es.cancels.addEventsOnChain(data.cancelEventsOnChain),
+      es.bulkCancels.addEvents(data.bulkCancelEvents),
+      es.nonceCancels.addEvents(data.nonceCancelEvents),
+    ]);
+  }
+
+  nonFills = nonFills.concat([
     es.nftApprovals.addEvents(data.nftApprovalEvents),
     es.ftTransfers.addEvents(data.ftTransferEvents, Boolean(backfill)),
     es.nftTransfers.addEvents(data.nftTransferEvents, Boolean(backfill)),
   ]);
+
+  await Promise.all(nonFills);
 
   // Trigger further processes:
   // - revalidate potentially-affected orders
