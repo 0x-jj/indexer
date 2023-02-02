@@ -34,7 +34,7 @@
           "experimental": {
             "datadog": {
               "enabled": true,
-              "datadogSite": "datadoghq.com",
+              "datadogSite": "us5.datadoghq.com",
               "datadogApiKey": "fc.indexer.env.production-m019z0z8q.7i1bq16nn.DATADOG_API_KEY",
               "envVariables": {
                 "DD_APM_ENABLED": true,
