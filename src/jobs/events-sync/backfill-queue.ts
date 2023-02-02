@@ -63,7 +63,7 @@ if (config.doBackgroundWork && config.doEventsSyncBackfill) {
         throw error;
       }
     },
-    { connection: redis.duplicate(), concurrency: 100 }
+    { connection: redis.duplicate(), concurrency: 250 }
   );
   worker.on("error", (error) => {
     logger.error(QUEUE_NAME, `Worker errored: ${error}`);
