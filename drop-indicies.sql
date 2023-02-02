@@ -106,7 +106,6 @@ DROP INDEX "orders_side_contract_created_at_index";
 DROP INDEX activities_collection_id_event_timestamp_type_index;
 DROP INDEX activities_contract_token_id_event_timestamp_type_index;
 DROP INDEX activities_collection_id_created_at_type_index;
-DROP INDEX activities_contract_token_id_created_at_type_index;
 DROP INDEX activities_block_hash_index;
 DROP INDEX activities_event_timestamp_index;
 DROP INDEX "fill_events_2_updated_at_tx_hash_index";
