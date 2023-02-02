@@ -286,7 +286,7 @@ const allEventData = [
 ];
 
 export const getEventData = (events?: string[]) => {
-  if (!events) {
+  if (!events || events.length === 0) {
     return allEventData;
   } else {
     return allEventData.filter(({ subKind }) => events.some((e) => subKind.startsWith(e)));
