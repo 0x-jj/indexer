@@ -99,13 +99,13 @@ export const processOnChainData = async (data: OnChainData, backfill?: boolean) 
     es.fills.addEventsOnChain(data.fillEventsOnChain),
   ]);
 
-  let nonFills: any[] = [];
+  let nonFills: Promise<void>[] = [];
 
   if (!backfill) {
     // During a long term backfill, we don't need cancel events.
     // We are assuming everything older than 6 months will have expired
     // so doesn't need to be marked as cancelled
-    // When we get closer to the current block (i.e. within 6 months) we should remove this 
+    // When we get closer to the current block (i.e. within 6 months) we should remove this
 
     nonFills = nonFills.concat([
       es.cancels.addEvents(data.cancelEvents),
