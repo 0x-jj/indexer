@@ -1,0 +1,81 @@
+{
+  "envVariables": {},
+  "environments": [
+    {
+      "id": "production-m019z0z8q",
+      "name": "Production",
+      "region": "us-east-2",
+      "source": {
+        "pr": false,
+        "branch": "main",
+        "trigger": "push"
+      },
+      "services": [
+        {
+          "id": "indexer-api-vCCD2u",
+          "cpu": 8,
+          "name": "indexer-api",
+          "port": 3000,
+          "type": "fargate",
+          "memory": 16,
+          "buildType": "docker",
+          "envVariables": {},
+          "maxInstances": 2,
+          "minInstances": 1,
+          "dockerContext": ".",
+          "dockerfilePath": "Dockerfile",
+          "healthCheckPath": "/livez",
+          "enableCloudfrontSwr": false,
+          "dockerLabels": {
+            "com.datadoghq.ad.instances": "[{\"host\": \"%%host%%\", \"port\": 3000}]",
+            "com.datadoghq.ad.check_names": "[\"fc-indexer\"]",
+            "com.datadoghq.ad.init_configs": "[{}]"
+          },
+          "experimental": {
+            "datadog": {
+              "enabled": true,
+              "datadogSite": "datadoghq.com",
+              "datadogApiKey": "fc.indexer.env.production-m019z0z8q.saei0xzf.DATADOG_API_KEY",
+              "envVariables": {
+                "DD_APM_ENABLED": true,
+                "DD_LOGS_ENABLED": true,
+                "ECS_FARGATE": true
+              }
+            }
+          }
+        },
+        {
+          "id": "deca-indexer-ycFCr0",
+          "name": "deca-indexer",
+          "port": 5432,
+          "type": "rds",
+          "engine": "postgres",
+          "private": false,
+          "storage": 20,
+          "maxStorage": 100,
+          "instanceSize": "db.r5b.xlarge",
+          "engineVersion": "14",
+          "deletionProtection": false,
+          "applyChangesImmediately": true,
+          "autoUpgradeMinorVersions": true,
+          "connectionStringEnvVarName": "DATABASE_URL"
+        },
+        {
+          "id": "job-redis-2J30Wj",
+          "name": "job-redis",
+          "port": 6379,
+          "type": "elasticache",
+          "engine": "redis",
+          "clusterMode": false,
+          "instanceSize": "cache.r6g.xlarge",
+          "engineVersion": "7.0",
+          "numberOfReplicas": 1,
+          "applyChangesImmediately": false,
+          "autoMinorVersionUpgrade": true,
+          "connectionStringEnvVarName": "REDIS_URL"
+        }
+      ],
+      "envVariables": {}
+    }
+  ]
+}

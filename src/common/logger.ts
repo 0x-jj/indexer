@@ -33,16 +33,14 @@ const log = (level: "error" | "info" | "warn" | "debug") => {
       format.json()
     ),
     transports: [
-      ...(process.env.DATADOG_API_KEY
-        ? [
-            new transports.Http({
-              host: "http-intake.logs.datadoghq.com",
-              path: `/api/v2/logs?dd-api-key=${process.env.DATADOG_API_KEY}&ddsource=nodejs&service=${service}`,
-              ssl: true,
-            }),
-          ]
-        : []),
-      new transports.Console(),
+      process.env.DATADOG_API_KEY
+        ? new transports.Http({
+            host: "http-intake.logs.datadoghq.com",
+            path: `/api/v2/logs?dd-api-key=${process.env.DATADOG_API_KEY}&ddsource=nodejs&service=${service}`,
+            ssl: true,
+          })
+        : // Fallback to logging to standard output
+          new transports.Console(),
     ],
   });
 
